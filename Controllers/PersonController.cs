@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using WebApplication.Models;
 
 namespace WebApplication.Controllers
 {
@@ -11,18 +12,19 @@ namespace WebApplication.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            Person[] persons = new Person[2] { new Person(1, "Mike", 22), new Person(2, "Harry", 21) };
+
+            return View(persons);
         }
 
-        /*public string ShowPerson(string name,int age) {
+        /*public string Details(string name,int age) {
 
             //return $"name:{name} age:{age}";
             return HtmlEncoder.Default.Encode($"name:{name} age:{age}");
         }*/
 
-        public IActionResult ShowPerson(string name,int age) {
-            ViewData["name"] = name;
-            ViewData["age"] = age;
+        public IActionResult Details() {
+            //Person[] persons = new Person[2] { new Person(1, "Mike", 22), new Person(2, "Harry", 21) };
 
             return View();
         }
