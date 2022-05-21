@@ -13,6 +13,8 @@ namespace WebApplication.Models
 
         public int Age { get; set; }
 
+        public Person() { }
+
         public Person(int id,string name,int age) {
             this.Id = id;
             this.Name = name;
