@@ -14,10 +14,17 @@ namespace WebApplication.Controllers
             return View();
         }
 
-        public string ShowPerson(string name,int age) {
+        /*public string ShowPerson(string name,int age) {
 
             //return $"name:{name} age:{age}";
             return HtmlEncoder.Default.Encode($"name:{name} age:{age}");
+        }*/
+
+        public IActionResult ShowPerson(string name,int age) {
+            ViewData["name"] = name;
+            ViewData["age"] = age;
+
+            return View();
         }
     }
 }
