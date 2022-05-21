@@ -9,14 +9,9 @@ namespace WebApplication.Controllers
 {
     public class PersonController : Controller
     {
-        /*public IActionResult Index()
+        public IActionResult Index()
         {
             return View();
-        }*/
-
-        public string Index() {
-
-            return "index";
         }
 
         public string ShowPerson(string name,int age) {
