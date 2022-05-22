@@ -20,9 +20,62 @@ namespace WebApplication.Controllers
         }
 
         // GET: Person
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
             return View(await _context.Person.ToListAsync());
+        }*/
+
+        /* public async Task<IActionResult> Index(string name) {
+             ViewData["CurrentFilter"] = name;
+             if (string.IsNullOrEmpty(name))
+             {
+                 var persons = from p in _context.Person select p;
+
+                 return View(await persons.ToListAsync());
+             }else {
+                 var persons = from p in _context.Person where p.Name.Contains(name) select p;
+
+                 return View(await persons.ToListAsync());
+             }
+
+             *//*var persons = from p in _context.Person select p;
+             if (!string.IsNullOrEmpty(name)) {
+                 persons = persons.Where(p => p.Name.Contains(name));
+             }
+
+             return View(await persons.ToListAsync());*//*
+         }*/
+
+        public async Task<IActionResult> Index(string name,string sortOrder) {
+            ViewData["CurrentFilter"] = name;
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AgeSortParam"] = sortOrder == "Age" ? "age_desc" : "Age";
+
+            var persons = from p in _context.Person select p;
+
+            switch (sortOrder) {
+                case "name_desc":
+                    persons = persons.OrderByDescending(p => p.Name);
+                    break;
+
+                case "age_desc":
+                    persons = persons.OrderByDescending(p => p.Age);
+                    break;
+
+                case "Age":
+                    persons = persons.OrderBy(p => p.Age);
+                    break;
+
+                default:
+                    persons = persons.OrderBy(p => p.Name);
+                    break;
+            }
+
+            if (!string.IsNullOrEmpty(name)) {
+                persons = persons.Where(p => p.Name.Contains(name));
+            }
+
+            return View(await persons.ToListAsync());
         }
 
         // GET: Person/Details/5
