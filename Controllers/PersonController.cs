@@ -46,7 +46,7 @@ namespace WebApplication.Controllers
              return View(await persons.ToListAsync());*//*
          }*/
 
-        public async Task<IActionResult> Index(string name,string sortOrder) {
+        /*public async Task<IActionResult> Index(string name,string sortOrder) {
             ViewData["CurrentFilter"] = name;
             ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["AgeSortParam"] = sortOrder == "Age" ? "age_desc" : "Age";
@@ -76,6 +76,50 @@ namespace WebApplication.Controllers
             }
 
             return View(await persons.ToListAsync());
+        }*/
+
+        public async Task<IActionResult> Index(string name, string sortOrder,string currentFilter,int? pageIndex)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AgeSortParam"] = sortOrder == "Age" ? "age_desc" : "Age";
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                pageIndex = 1;
+            }else {
+                name = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = name;
+
+            var persons = from p in _context.Person select p;
+
+            if (!string.IsNullOrEmpty(name)){
+                persons = persons.Where(p => p.Name.Contains(name));
+            }
+
+            switch (sortOrder){
+                case "name_desc":
+                    persons = persons.OrderByDescending(p => p.Name);
+                    break;
+
+                case "age_desc":
+                    persons = persons.OrderByDescending(p => p.Age);
+                    break;
+
+                case "Age":
+                    persons = persons.OrderBy(p => p.Age);
+                    break;
+
+                default:
+                    persons = persons.OrderBy(p => p.Name);
+                    break;
+            }
+
+            int pageSize = 2;
+
+            return View(await PaginatedList<Person>.CreateAsync(persons.AsNoTracking(), pageIndex ?? 1,pageSize));
         }
 
         // GET: Person/Details/5
