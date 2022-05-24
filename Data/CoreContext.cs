@@ -5,15 +5,22 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Models;
 
+
 namespace WebApplication.Data
 {
-    public class PersonContext : DbContext
+    public class CoreContext : DbContext
     {
-        public PersonContext (DbContextOptions<PersonContext> options)
+        public CoreContext (DbContextOptions<CoreContext> options)
             : base(options)
         {
         }
 
         public DbSet<WebApplication.Models.Person> Person { get; set; }
+
+        public DbSet<WebApplication.Models.Book> Book { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<Book>().ToTable(Common.Table_Book);
+        }
     }
 }

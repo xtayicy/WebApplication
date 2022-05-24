@@ -12,9 +12,9 @@ namespace WebApplication.Controllers
 {
     public class PersonController : Controller
     {
-        private readonly PersonContext _context;
+        private readonly CoreContext _context;
 
-        public PersonController(PersonContext context)
+        public PersonController(CoreContext context)
         {
             _context = context;
         }

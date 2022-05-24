@@ -27,7 +27,7 @@ namespace WebApplication
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<PersonContext>(options =>
+            services.AddDbContext<CoreContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
         }
 

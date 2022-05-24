@@ -6,23 +6,21 @@ using System.Threading.Tasks;
 
 namespace WebApplication.Models
 {
-    public class Person
-    {   
+    public class Book
+    {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
+        public int? person_id { get; set; }
+
         public string Name { get; set; }
 
-        public int Age { get; set; }
+        public Person Person { get; set; }
 
-        public ICollection<Book> books { get; set; }
+        public Book() { }
 
-        public Person() { }
-
-        public Person(int id,string name,int age) {
-            this.Id = id;
+        public Book(string name) {
             this.Name = name;
-            this.Age = age;
         }
     }
 }
