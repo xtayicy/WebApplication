@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.Models;
 
-
 namespace WebApplication.Data
 {
     public class CoreContext : DbContext
@@ -15,9 +14,9 @@ namespace WebApplication.Data
         {
         }
 
-        public DbSet<WebApplication.Models.Person> Person { get; set; }
-
         public DbSet<WebApplication.Models.Book> Book { get; set; }
+
+        public DbSet<WebApplication.Models.Person> Person { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Book>().ToTable(Common.Table_Book);

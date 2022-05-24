@@ -28,7 +28,7 @@ namespace WebApplication
             services.AddControllersWithViews();
 
             services.AddDbContext<CoreContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("PersonContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("CoreContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
