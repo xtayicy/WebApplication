@@ -18,7 +18,7 @@ namespace WebApplication.Models
 
         public string Name { get; set; }
 
-        public Person Person { get; set; }
+        public Person? Person { get; set; }
 
         public Book() { }
 

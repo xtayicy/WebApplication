@@ -8,5 +8,7 @@ namespace WebApplication
     public class Common
     {
         public const string Table_Book = "book";
+
+        public const string Table_Person = "person";
     }
 }

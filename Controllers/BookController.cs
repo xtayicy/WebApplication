@@ -19,10 +19,20 @@ namespace WebApplication.Controllers
             _context = context;
         }
 
+        private void PopulatePersonDropDownList(object selectPerson = null) {
+            var persons = from p in _context.Person
+                          orderby p.Name
+                          select p;
+
+            ViewBag.PersonId = new SelectList(persons.AsNoTracking(), "Id", "Name", selectPerson);
+        }
+
         // GET: Book
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Book.ToListAsync());
+            var books = _context.Book.Include(b => b.Person).AsNoTracking();
+
+            return View(await books.ToListAsync());
         }
 
         // GET: Book/Details/5
@@ -33,8 +43,9 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.Id == id);
+            /*var book = await _context.Book
+                .FirstOrDefaultAsync(m => m.Id == id);*/
+            var book = await _context.Book.Include(b => b.Person).AsNoTracking().FirstOrDefaultAsync(b => b.Id == id) ;
             if (book == null)
             {
                 return NotFound();
@@ -46,6 +57,7 @@ namespace WebApplication.Controllers
         // GET: Book/Create
         public IActionResult Create()
         {
+            PopulatePersonDropDownList();
             return View();
         }
 
@@ -54,7 +66,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,person_id,Name")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,PersonId,Name")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +74,9 @@ namespace WebApplication.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            PopulatePersonDropDownList(book.PersonId);
+
             return View(book);
         }
 
@@ -78,6 +93,9 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
+
+            PopulatePersonDropDownList(book.PersonId);
+
             return View(book);
         }
 
@@ -86,7 +104,7 @@ namespace WebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,person_id,Name")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PersonId,Name")] Book book)
         {
             if (id != book.Id)
             {
@@ -113,6 +131,9 @@ namespace WebApplication.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            PopulatePersonDropDownList(book.PersonId);
+
             return View(book);
         }
 
@@ -124,8 +145,9 @@ namespace WebApplication.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.Id == id);
+            /*var book = await _context.Book
+                .FirstOrDefaultAsync(m => m.Id == id);*/
+            var book = await _context.Book.Include(b => b.Person).AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
             if (book == null)
             {
                 return NotFound();

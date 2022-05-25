@@ -20,6 +20,7 @@ namespace WebApplication.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Book>().ToTable(Common.Table_Book);
+            modelBuilder.Entity<Person>().ToTable(Common.Table_Person);
         }
     }
 }
